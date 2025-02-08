@@ -5,6 +5,10 @@
 # macOS の不要ファイルを除外
 .DS_Store
 
+# Python cache
+__pycache__/
+*.py[cod]
+
 ## User settings
 xcuserdata/
 
