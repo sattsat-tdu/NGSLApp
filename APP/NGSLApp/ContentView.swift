@@ -9,14 +9,47 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var viewModel = ContentViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            VStack {
+                HStack {
+                    Text("NGSL単語一覧")
+                        .font(.largeTitle.bold())
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                
+                ScrollView() {
+                    LazyVStack {
+                        ForEach(viewModel.words) { word in
+                            WordCell(word: word)
+                        }
+                        
+                        Button("追加読み込み") {
+                            viewModel.loadMoreWords()
+                        }
+                    }
+                    .padding()
+                }
+            }
+            
+            if viewModel.isLoading {
+                Color.gray.opacity(0.2)
+                    .ignoresSafeArea()
+                    .overlay {
+                        ProgressView()
+                    }
+            }
         }
-        .padding()
+        .onAppear {
+            viewModel.refreshWords()
+        }
+        .refreshable {
+            viewModel.refreshWords()
+        }
     }
 }
 
