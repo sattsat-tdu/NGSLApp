@@ -15,6 +15,13 @@ struct WordResponse: Decodable {
     let jp_sentence: String
     
     func toModel() -> Word {
-        return Word(id: id, english: english, japanese: japanese, pos: pos, en_sentence: en_sentence, jp_sentence: jp_sentence)
+        return Word(
+            id: id,
+            english: english,
+            japanese: japanese,
+            pos: Pos(rawValue: pos) ?? .unknown, 
+            en_sentence: en_sentence,
+            jp_sentence: jp_sentence
+        )
     }
 }
